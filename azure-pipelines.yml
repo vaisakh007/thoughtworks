@@ -1,0 +1,18 @@
+# ADO pipeline yaml 
+# author vaisakh reghunathan
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+pr:
+  branches:
+    include:
+    - master
+    - dev
+
+
+
+stages:
+- template: pipelines/install_kubernetes.yml
+- template: pipelines/install_mediawiki.yml

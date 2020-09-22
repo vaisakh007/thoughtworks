@@ -1,0 +1,28 @@
+stages:
+  - stage: app_deploy
+    jobs:
+    - job: CD_Job
+      pool:
+       vmImage: 'ubuntu-latest'
+      workspace:
+       clean: all 
+      variables:
+      - group: dev 
+      steps:
+      - checkout: self 
+      - task: Bash@3
+        inputs:
+         targetType: 'inline'
+         script: |
+           # Write your commands here
+                 az login --service-principal -u XXXXX -p XXXX --tenant XXXX && az account set --subscription XXXX
+                 az aks get-credentials --name k8s -g azure-k8s
+                 cd helm
+                 helm install dev  -f values.yaml  .
+                 sleep 240 && echo 'get ip' 
+                 ip=$(kubectl get svc dev-mediawiki -o json | jq .status.loadBalancer.ingress[0].ip | sed 's/"//g')
+                 echo 'ip is'+$ip
+                 helm install prod -f values.yaml --set mediawikiHost=$(echo $ip) .
+                 kubectl get svc prod-mediawiki 
+                 
+                 

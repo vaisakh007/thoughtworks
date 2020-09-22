@@ -1,0 +1,23 @@
+stages:
+- stage: CI_Stage
+  jobs:
+  - job: CI_Job
+    pool:
+     vmImage: 'windows-latest'
+    workspace:
+     clean: all 
+    steps:
+    - checkout: self 
+    - task: Terraform@2
+      inputs:
+        TemplatePath: 'terraform/'
+        Arguments: 'apply -auto-approve'
+        InstallTerraform: true
+        UseAzureSub: true
+        ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+        ConnectedServiceNameARM: 'vaisakh_msdn'
+        ManageState: true
+        SpecifyStorageAccount: true
+        StorageAccountResourceGroup: 'myapilearn'
+        StorageAccountRM: 'vaisakh'
+        StorageContainerName: 'test'
