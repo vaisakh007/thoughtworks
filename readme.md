@@ -35,3 +35,4 @@ At azure devops side create a service connection to azure cloud subscription
 Now run the pipelines to create the infra and application from 
 azure devops
 
+![alt text](https://github.com/vaisakh007/thoughtworks/blob/master/image/mediawiki_out.png)
